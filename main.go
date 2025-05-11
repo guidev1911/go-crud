@@ -1,17 +1,20 @@
 package main
 
 import (
-    "github.com/gin-gonic/gin"
+	"go-crud/database"
+	"go-crud/models"
+	"go-crud/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-    r := gin.Default()
+	r := gin.Default()
 
-    r.GET("/", func(c *gin.Context) {
-        c.JSON(200, gin.H{
-            "message": "Hello, Golang!",
-        })
-    })
+	database.Connect()
+	database.DB.AutoMigrate(&models.User{})
 
-    r.Run() 
+	routes.UserRoutes(r)
+
+	r.Run(":8080")
 }
